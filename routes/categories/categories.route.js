@@ -4,6 +4,7 @@ const { uploadFiles } = require("../../utils/upload_files");
 
 const router = express.Router();
 
+
 router.post("/getCategories", categoriesController.getCategories);
 
 router.post(

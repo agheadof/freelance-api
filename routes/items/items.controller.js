@@ -33,7 +33,7 @@ async function getFreelancerItems(req, res, next) {
 async function addItem(req, res, next) {
   try {
     const data = req.body;
-    const image = req.file.path;
+    const image = req.file.path.replace(/\\/g, '/');
 
     await Item.addItem(data.name, image, data.description, data.prise, data.userId);
 
@@ -53,7 +53,7 @@ async function editItem(req, res, next) {
     let image;
 
     if (req.file) {
-      image = req.file.path;
+      image = req.file.path.replace(/\\/g, '/');
     }
 
     await Item.editItem(

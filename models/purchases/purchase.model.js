@@ -5,8 +5,8 @@ const Purchase = require("./purchase.mongo");
 
 async function getPurchases(userId) {
   const filter = {
-      user: userId,
-    },
+    user: userId,
+  },
     empty = {};
 
   const purchases = await Purchase.find(filter, empty, empty).sort({ _id: -1 });
@@ -18,8 +18,8 @@ async function getPurchases(userId) {
 
 async function makePurchase(itemId, userId) {
   const filter = {
-      _id: itemId,
-    },
+    _id: itemId,
+  },
     empty = {};
   let user = await User_m.findOne({ _id: userId }, empty, empty);
   let item = await Item.findOne(filter, empty, empty);
@@ -29,20 +29,28 @@ async function makePurchase(itemId, userId) {
   let freelancerId = item.user;
   let name = item.name;
   let prise = item.prise;
-  
-  if(userBalance < prise){
 
-    User.updateBalance(userId, prise, "-");
-    User.updateBalance(freelancerId, prise, "+");
-    const purchaseData = { name, prise, userId };
-  
-    const purchase = new Purchase(purchaseData);
-  
-    const result = await purchase.save();
-  
-    return {
-      newPurchase: result,
-    };
+  if (userBalance > prise) {
+    try {
+      let userBalance = await User.updateBalance(userId, prise, "-");
+      let flBalance = await User.updateBalance(freelancerId, prise, "+");
+
+      const purchaseData = { name, prise, user: userId };
+
+      const purchase = new Purchase(purchaseData);
+
+      const result = await purchase.save();
+
+      return {
+        newPurchase: result,
+        userBalance: userBalance,
+        flBalance: flBalance
+      };
+    }
+    catch {
+
+      return Error
+    }
   }
 
 }

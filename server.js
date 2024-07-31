@@ -14,6 +14,6 @@ async function startServer() {
   server.listen(PORT);
 }
 
-startServer().then(() => console.log("Started Server"));
+startServer().then(() => console.log(`Started Server on ${PORT}`));
 
 // node .\server.js

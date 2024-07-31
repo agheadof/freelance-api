@@ -17,7 +17,7 @@ async function getCategories(req, res, next) {
 async function addCategory(req, res, next) {
   try {
     const data = req.body;
-    const image = req.file.path;
+    const image = req.file.path.replace(/\\/g, '/');
 
     await Category.addCategory(data.name, image);
 
@@ -37,7 +37,7 @@ async function editCategory(req, res, next) {
     let image;
 
     if (req.file) {
-      image = req.file.path;
+      image = req.file.path.replace(/\\/g, '/');
     }
 
     await Category.editCategory(req.params.categoryId, data.name, image);

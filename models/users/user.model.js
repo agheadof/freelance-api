@@ -72,8 +72,8 @@ async function signUp(name, phoneNumber, password, type, category) {
 
 async function editUser(userId, name, phoneNumber, password, type, category) {
   const filter = {
-      _id: userId,
-    },
+    _id: userId,
+  },
     empty = {},
     newData = {};
 
@@ -86,7 +86,7 @@ async function editUser(userId, name, phoneNumber, password, type, category) {
   }
 
   if (password) {
-    newData.password = await bcrypt.hash(password, 12);
+    newData.password = password;
   }
 
   if (type) {
@@ -102,8 +102,8 @@ async function editUser(userId, name, phoneNumber, password, type, category) {
 
 async function rateUser(userId, rating) {
   const filter = {
-      _id: userId,
-    },
+    _id: userId,
+  },
     empty = {};
 
   const user = await User.find(filter, {}, {});
@@ -123,8 +123,8 @@ async function rateUser(userId, rating) {
 
 async function deleteUser(userId) {
   const filter = {
-      _id: userId,
-    },
+    _id: userId,
+  },
     empty = {};
 
   await User.deleteOne(filter, empty);
@@ -132,29 +132,27 @@ async function deleteUser(userId) {
 
 async function updateBalance(userId, balance, operation) {
   const filter = {
-      _id: userId,
-    },
+    _id: userId,
+  },
     empty = {};
 
   const user = await User.findOne(filter, {}, {});
   let newBalance = user.balance
-  
-  if (operation === '+' || !operation)
-  {
-    newBalance = (user.balance + Number(balance)) ;
+
+  if (operation === '+' || !operation) {
+    newBalance = (user.balance + Number(balance));
   }
 
-  else if(operation === '-')
-  {
-    newBalance = (user.balance - Number(balance)) ;
+  else if (operation === '-') {
+    newBalance = (user.balance - Number(balance));
   }
-  
+
 
   const newData = {
     balance: newBalance,
   };
-
   await User.updateOne(filter, newData, empty);
+  return newBalance
 }
 
 
@@ -167,5 +165,5 @@ module.exports = {
   editUser,
   deleteUser,
   updateBalance,
-  
+
 };

@@ -11,7 +11,7 @@ function uploadFiles(filePath) {
         const exists = fs.existsSync(dirPath);
 
         if (!exists) {
-          fs.mkdirSync(dirPath);
+          fs.mkdirSync(dirPath, { recursive: true });
         }
 
         cb(null, dirPath);
